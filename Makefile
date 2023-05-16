@@ -3,7 +3,7 @@ export
 
 TEST?=$$(go list ./... |grep -v 'vendor')
 GOFMT_FILES?=$$(find . -name '*.go' |grep -v vendor)
-PKG_NAME?=digitalocean
+PKG_NAME?=pkg
 ACCTEST_TIMEOUT?=120m
 ACCTEST_PARALLELISM?=2
 
@@ -29,10 +29,6 @@ vet:
 		exit 1; \
 	fi
 
-sweep:
-	@echo "WARNING: This will destroy infrastructure. Use only in development accounts."
-	go test ./digitalocean/sweep/... -v -sweep=1
-
 goimports:
 	@echo "==> Fixing imports code with goimports..."
 	@find . -name '*.go' | grep -v vendor | grep -v generator-resource-id | while read f; do goimports -w "$$f"; done
@@ -53,10 +49,10 @@ install-terrafmt:
 	@go install github.com/katbyte/terrafmt@latest
 
 terrafmt: install-terrafmt # Formats Terraform configuration blocks in tests.
-	@terrafmt fmt --fmtcompat digitalocean/
+	@terrafmt fmt --fmtcompat pkg/
 
 terrafmt-check: install-terrafmt # Returns non-0 exit code if terrafmt would make a change.
-	@terrafmt diff --check --fmtcompat digitalocean/
+	@terrafmt diff --check --fmtcompat pkg/
 
 errcheck:
 	@sh -c "'$(CURDIR)/scripts/errcheck.sh'"
