@@ -14,6 +14,10 @@ type Config struct {
 	DB       int
 }
 
+func (c *Client) goRedisClient() *redis.Client {
+	return c.client
+}
+
 type Client struct {
 	client *redis.Client
 }

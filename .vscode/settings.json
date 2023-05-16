@@ -1,0 +1,13 @@
+{
+  "terminal.integrated.env.linux": {
+    "REDIS_ADDR": "localhost:6379",
+    "TF_ACC": "true"
+  },
+  "go.testFlags": ["-count=1"],
+  "go.testEnvVars": {
+    "TF_ACC": "true",
+    "GOPROXY": "off",
+    "GOFLAGS": "-mod=vendor",
+    "REDIS_ADDR": "localhost:6379"
+  }
+}
