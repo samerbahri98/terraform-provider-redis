@@ -61,10 +61,10 @@ type testKeyValuePairConfig struct {
 
 func (c *testKeyValuePairConfig) render() string {
 	return fmt.Sprintf(`
-		resource "redis_key_string_pair" "foo" {
-			key = "%s"
-			value = "%s"
-		}
+resource "redis_key_string_pair" "foo" {
+  key   = "%s"
+  value = "%s"
+}
 		`, c.key, c.value)
 }
 
@@ -101,11 +101,11 @@ type testKeyValuePairWithExpiryConfig struct {
 
 func (c *testKeyValuePairWithExpiryConfig) render() string {
 	return fmt.Sprintf(`
-		resource "redis_key_string_pair" "foo"{
-			key = "%s"
-			value = "%s"
-			expiry = "%ds"
-		}
+resource "redis_key_string_pair" "foo"{
+  key 	 = "%s"
+  value  = "%s"
+  expiry = "%ds"
+}
 		`, c.key, c.value, c.expiry)
 }
 
