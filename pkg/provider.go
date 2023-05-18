@@ -26,6 +26,7 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"redis_key_string_pair": resourceKeyStringPair(),
+			"redis_key_list_pair":   resourceKeyListPair(),
 		},
 		ConfigureFunc: providerConfigure,
 	}
