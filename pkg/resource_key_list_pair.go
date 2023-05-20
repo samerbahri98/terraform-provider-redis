@@ -12,7 +12,7 @@ func resourceKeyListPair() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: resourceKeyListPairCreate,
 		ReadContext:   resourceKeyListPairRead,
-		UpdateContext: resourceKeyListPairCreate, // Might need change (in case we change 1 element in the list?)
+		UpdateContext: resourceKeyListPairUpdate,
 		DeleteContext: resourceKeyListPairDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
@@ -37,7 +37,7 @@ func resourceKeyListPair() *schema.Resource {
 	}
 }
 
-func resourceKeyListPairCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func create(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Client).goRedisClient()
 	duration, _ := time.ParseDuration(d.Get("expiry").(string))
 	key := d.Get("key").(string)
@@ -53,6 +53,25 @@ func resourceKeyListPairCreate(ctx context.Context, d *schema.ResourceData, meta
 	client.RPush(ctx, key, stringSlice)
 
 	return resourceKeyListPairRead(ctx, d, meta)
+}
+
+func resourceKeyListPairCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Client).goRedisClient()
+	if client.Exists(ctx, d.Get("key").(string)).Val() != 0 {
+		return diag.Errorf("Key exists, use update instead")
+	}
+
+	return create(ctx, d, meta)
+}
+
+func resourceKeyListPairUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Client).goRedisClient()
+	if client.Exists(ctx, d.Get("key").(string)).Val() == 0 {
+		return diag.Errorf("Key does not exist")
+	}
+
+	resourceKeyListPairDelete(ctx, d, meta)
+	return create(ctx, d, meta)
 }
 
 func resourceKeyListPairRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
