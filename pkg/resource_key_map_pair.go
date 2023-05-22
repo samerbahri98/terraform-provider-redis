@@ -46,10 +46,6 @@ func createMap(ctx context.Context, d *schema.ResourceData, meta interface{}) di
 	client.Expire(ctx, key, duration)
 
 	v := d.Get("value").(map[string]interface{})
-	// stringSlice := make([]interface{}, len(v))
-	// for i, value := range v {
-	// 	stringSlice[i] = value.(string)
-	// }
 	client.HSet(ctx, key, v)
 
 	return resourceKeyMapPairRead(ctx, d, meta)
