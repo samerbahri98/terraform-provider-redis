@@ -45,7 +45,7 @@ func createMap(ctx context.Context, d *schema.ResourceData, meta interface{}) di
 	d.SetId(key)
 	client.Expire(ctx, key, duration)
 
-	v := d.Get("value").([]interface{})
+	v := d.Get("value").(map[string]interface{})
 	// stringSlice := make([]interface{}, len(v))
 	// for i, value := range v {
 	// 	stringSlice[i] = value.(string)
@@ -67,7 +67,7 @@ func resourceKeyMapPairCreate(ctx context.Context, d *schema.ResourceData, meta 
 func resourceKeyMapPairRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Client).goRedisClient()
 	key := d.Id()
-	val := d.Get("value").([]interface{})
+	val := d.Get("value").(map[string]interface{})
 
 	v, _ := client.HGetAll(ctx, key).Result()
 	if len(v) != len(val) {
