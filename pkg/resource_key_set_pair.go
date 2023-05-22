@@ -30,6 +30,7 @@ func resourceKeySetPair() *schema.Resource {
 			},
 			"value": {
 				Type:     schema.TypeSet,
+				Elem:     &schema.Schema{Type: schema.TypeString},
 				Required: true,
 			},
 		},
@@ -44,12 +45,12 @@ func createSet(ctx context.Context, d *schema.ResourceData, meta interface{}) di
 	d.SetId(key)
 	client.Expire(ctx, key, duration)
 
-	v := d.Get("value").([]interface{})
+	v := d.Get("value").(*schema.Set).List()
 	stringSlice := make([]interface{}, len(v))
 	for i, value := range v {
 		stringSlice[i] = value.(string)
 	}
-	client.SAdd(ctx, key, stringSlice)
+	client.SAdd(ctx, key, stringSlice...)
 
 	return resourceKeySetPairRead(ctx, d, meta)
 }
@@ -76,13 +77,11 @@ func resourceKeySetPairUpdate(ctx context.Context, d *schema.ResourceData, meta 
 func resourceKeySetPairRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Client).goRedisClient()
 	key := d.Id()
-	val := d.Get("value").([]interface{})
+	val := d.Get("value").(*schema.Set).List()
 
 	v, _ := client.SMembers(ctx, key).Result()
-	for i, value := range val {
-		if v[i] != value.(string) {
-			return diag.Errorf("Redis Error")
-		}
+	if len(v) != len(val) {
+		return diag.Errorf("Redis Error")
 	}
 
 	return nil
