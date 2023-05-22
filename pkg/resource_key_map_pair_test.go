@@ -3,6 +3,7 @@ package pkg
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -96,6 +97,7 @@ func TestKeyMapPair(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckkeyMapPairExists("redis_key_map_pair.foo"),
 					resource.TestCheckResourceAttr("redis_key_map_pair.foo", "key", c.key),
+					resource.TestCheckResourceAttr("redis_key_map_pair.foo", "value.%", strconv.Itoa(len(c.value))),
 				),
 			},
 		},
@@ -172,6 +174,7 @@ func TestKeyMapPairWithExpiry(t *testing.T) {
 					testAccCheckkeyMapPairExists("redis_key_map_pair.foo"),
 					resource.TestCheckResourceAttr("redis_key_map_pair.foo", "key", c.key),
 					testAccCheckkeyMapPairExpiry("redis_key_map_pair.foo", c.expiry),
+					resource.TestCheckResourceAttr("redis_key_map_pair.foo", "value.%", strconv.Itoa(len(c.value))),
 				),
 			},
 		},
