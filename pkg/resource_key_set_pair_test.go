@@ -88,16 +88,9 @@ func TestKeySetPair(t *testing.T) {
 			{
 				Config: c.render(),
 				Check: resource.ComposeTestCheckFunc(
-<<<<<<< HEAD
 					testAccCheckkeySetPairExists("redis_key_set_pair.foo"),
 					resource.TestCheckResourceAttr("redis_key_set_pair.foo", "key", c.key),
 					resource.TestCheckResourceAttr("redis_key_set_pair.foo", "value.#", strconv.Itoa(len(c.value))),
-=======
-					testAccCheckkeySetPairExists("redis_key_list_pair.foo"),
-					resource.TestCheckResourceAttr("redis_key_list_pair.foo", "key", c.key),
-					resource.TestCheckResourceAttr("redis_key_list_pair.foo", "value.0", c.value[0]),
-					resource.TestCheckResourceAttr("redis_key_list_pair.foo", "value.#", strconv.Itoa(len(c.value))),
->>>>>>> 4aeb191 (Added: tests)
 				),
 			},
 		},
@@ -164,18 +157,10 @@ func TestKeySetPairWithExpiry(t *testing.T) {
 			{
 				Config: c.render(),
 				Check: resource.ComposeTestCheckFunc(
-<<<<<<< HEAD
 					testAccCheckkeySetPairExists("redis_key_set_pair.foo"),
 					resource.TestCheckResourceAttr("redis_key_set_pair.foo", "key", c.key),
 					resource.TestCheckResourceAttr("redis_key_set_pair.foo", "value.#", strconv.Itoa(len(c.value))),
 					testAccCheckkeySetPairExpiry("redis_key_set_pair.foo", c.expiry),
-=======
-					testAccCheckkeySetPairExists("redis_key_list_pair.foo"),
-					resource.TestCheckResourceAttr("redis_key_list_pair.foo", "key", c.key),
-					resource.TestCheckResourceAttr("redis_key_list_pair.foo", "value.0", c.value[0]),
-					resource.TestCheckResourceAttr("redis_key_list_pair.foo", "value.#", strconv.Itoa(len(c.value))),
-					testAccCheckkeySetPairExpiry("redis_key_list_pair.foo", c.expiry),
->>>>>>> 4aeb191 (Added: tests)
 				),
 			},
 		},
