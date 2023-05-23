@@ -67,13 +67,14 @@ func (c *testKeyMapPairConfig) render() string {
 	}
 	val := strings.Join(modifiedStrings, "\n")
 
-	result := fmt.Sprintf(`
+	return fmt.Sprintf(`
 resource "redis_key_map_pair" "foo" {
-  key   = "%s"
-  value = {%s}
+  key = "%s"
+  value = {
+	%s
+  }
 }
 		`, c.key, val)
-	return result
 }
 
 func TestKeyMapPair(t *testing.T) {
@@ -121,12 +122,14 @@ func (c *testKeyMapPairWithExpiryConfig) render() string {
 	val := strings.Join(modifiedStrings, "\n")
 
 	return fmt.Sprintf(`
-resource "redis_key_map_pair" "foo" {
-  key   = "%s"
+resource "redis_key_map_pair" "foo"{
+  key 	 = "%s"
+  value  = {
+	%s
+  }
   expiry = "%ds"
-  value = {%s}
 }
-		`, c.key, c.expiry, val)
+		`, c.key, val, c.expiry)
 }
 
 func testAccCheckkeyMapPairExpiry(n string, t int) resource.TestCheckFunc {
