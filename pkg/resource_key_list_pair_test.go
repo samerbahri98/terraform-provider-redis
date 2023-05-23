@@ -99,7 +99,6 @@ func TestKeyListPair(t *testing.T) {
 }
 
 // </Without Expiry>
-<<<<<<< HEAD
 // <With Expiry>
 type testKeyListPairWithExpiryConfig struct {
 	key    string
@@ -171,5 +170,3 @@ func TestKeyListPairWithExpiry(t *testing.T) {
 }
 
 // </With Expiry>
-=======
->>>>>>> 759c354 (Added: create and read key list pair)
