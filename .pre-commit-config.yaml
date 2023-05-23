@@ -20,10 +20,6 @@ repos:
     hooks:
       - id: yamllint
         args: [-c=.yamllint]
-  - repo: https://github.com/golangci/golangci-lint.git
-    rev: v1.51.2
-    hooks:
-      - id: golangci-lint
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.9.0.2
     hooks:
