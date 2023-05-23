@@ -26,18 +26,18 @@ func testCheckDataSourceRedisKeyStringPairExists(resourceName string) resource.T
 
 func renderDataSourceKeyStringPair(key string) string {
 	return fmt.Sprintf(`
-		data "redis_key_string_pair" "test" {
-			key = "%s"
-		}
+data "redis_key_string_pair" "test" {
+  key = "%s"
+}
 	`, key)
 }
 
 func renderKeyStringPair(key, value string) string {
 	return fmt.Sprintf(`
-		resource "redis_key_string_pair" "foo" {
-			key   = "%s"
-			value = "%s"
-		}
+resource "redis_key_string_pair" "foo" {
+  key   = "%s"
+  value = "%s"
+}
 	`, key, value)
 }
 
