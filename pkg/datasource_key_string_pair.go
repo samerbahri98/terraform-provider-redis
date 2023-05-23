@@ -19,29 +19,28 @@ func datasourceKeyStringPair() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
-			"expiry": {
-				Type:     schema.TypeString,
-				Default:  "0s",
-				Optional: true,
-			},
+			// "expiry": {
+			// 	Type:     schema.TypeString,
+			// 	Default:  "0s",
+			// 	Optional: true,
+			// },
 			"value": {
 				Type:     schema.TypeString,
-				Required: true,
+				Computed: true,
 			},
 		},
 	}
 }
 
 func datasourceKeyStringPairRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	client := meta.(*Client).goRedisClient()
-	if client.Exists(ctx, d.Get("key").(string)).Val() == 0 {
-		return diag.Errorf("Key does not exist")
-	}
+	key := d.Get("key").(string)
 
-	v := client.Get(ctx, d.Id())
-	if v.Val() != d.Get("value").(string) {
-		return diag.Errorf("Redis Error")
-	}
+	client := meta.(*Client).goRedisClient()
+
+	value, _ := client.Get(ctx, key).Result()
+
+	d.Set("value", value)
+	d.SetId(key)
 
 	return nil
 }
