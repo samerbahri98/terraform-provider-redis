@@ -19,11 +19,6 @@ func datasourceKeyStringPair() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 			},
-			// "expiry": {
-			// 	Type:     schema.TypeString,
-			// 	Default:  "0s",
-			// 	Optional: true,
-			// },
 			"value": {
 				Type:     schema.TypeString,
 				Computed: true,
